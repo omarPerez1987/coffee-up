@@ -1,24 +1,31 @@
+'use client'
+
 import { signOutAction } from '@/app/actions'
-import { createClient } from '@/utils/supabase/server'
+import { useAuthenticate } from '@/lib/hooks/useAuthenticate'
+import { DoorOpen } from 'lucide-react'
 import Link from 'next/link'
 import { ThemeSwitcher } from './theme-switcher'
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Button } from './ui/button'
 
-export default async function AuthButton() {
-  const supabase = await createClient()
+export default function AuthButton() {
+  const { user } = useAuthenticate()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const avatar = user?.user_metadata?.avatar_url
+  const noAvatar = user?.email?.slice(0, 2).toUpperCase()
 
   return user ? (
     <div className="flex items-center gap-4">
-      {user.email}
+      <Avatar className="h-6 w-auto">
+        <AvatarImage src={avatar} />
+        <AvatarFallback>{noAvatar}</AvatarFallback>
+      </Avatar>
       <form action={signOutAction}>
-        <Button type="submit" variant={'outline'}>
-          Salir
+        <Button type="submit" variant={null}>
+          <DoorOpen strokeWidth={1} />
         </Button>
       </form>
+      <ThemeSwitcher />
     </div>
   ) : (
     <div className="flex gap-2">
