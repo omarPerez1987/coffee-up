@@ -1,7 +1,7 @@
 'use client'
 
 import { signOutAction } from '@/app/actions'
-import { useAuthenticate } from '@/lib/hooks/useAuthenticate'
+import { useAuthenticate } from '@/lib/hooks/use-authenticate'
 import { DoorOpen } from 'lucide-react'
 import Link from 'next/link'
 import { ThemeSwitcher } from './theme-switcher'
@@ -30,10 +30,10 @@ export default function AuthButton() {
   ) : (
     <div className="flex gap-2">
       <Button asChild size="sm" variant={'outline'}>
-        <Link href="/sign-in">Iniciar sesión</Link>
+        <Link href="/auth/sign-in">Iniciar sesión</Link>
       </Button>
       <Button asChild size="sm" variant={'default'}>
-        <Link href="/sign-up">Registrarse</Link>
+        <Link href="/auth/sign-up">Registrarse</Link>
       </Button>
       <ThemeSwitcher />
     </div>

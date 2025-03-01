@@ -14,7 +14,10 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
       <h1 className="text-2xl font-medium">Iniciar sesión</h1>
       <p className="text-sm text-foreground">
         ¿No tienes una cuenta?
-        <Link className="text-foreground font-medium underline" href="/sign-up">
+        <Link
+          className="text-foreground font-medium underline"
+          href="/auth/sign-up"
+        >
           Regístrate
         </Link>
       </p>
@@ -39,7 +42,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
           <Label htmlFor="password">Contraseña</Label>
           <Link
             className="text-xs text-foreground underline"
-            href="/forgot-password"
+            href="/auth/forgot-password"
           >
             He olvidado mi contraseña
           </Link>
@@ -61,8 +64,8 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
 
       <div className="flex flex-col gap-2 mt-8">
         <span>
-          By signing up to create an account, you are accepting our terms of
-          service and privacy policy
+          Al registrarse para crear una cuenta, usted acepta nuestros términos
+          de servicio y política de privacidad.
         </span>
       </div>
     </form>

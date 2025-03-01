@@ -23,7 +23,7 @@ export function ButtonGoogle() {
       return
     }
 
-    return redirect('/home')
+    return redirect('/dashboard')
   }
 
   return <GoogleLogin onSuccess={handleSignInWithGoogle} />
