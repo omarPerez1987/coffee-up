@@ -13,4 +13,4 @@ export const coffeeSchema = z.object({
     .max(5)
     .transform(val => Number.parseFloat(val.replace(',', '.'))),
 })
-export type CoffeeForm = z.infer<typeof coffeeSchema>
+export type CoffeeFormData = z.infer<typeof coffeeSchema>

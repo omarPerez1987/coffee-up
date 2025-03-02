@@ -1,4 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
+import NextAuth from 'next-auth'
 import { cookies } from 'next/headers'
 
 export const createClient = async () => {

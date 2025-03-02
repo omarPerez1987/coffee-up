@@ -1,41 +1,56 @@
-'use-client'
-
 import useCreateCoffee from '@/lib/hooks/use-create-coffee'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { CoffeeForm, coffeeSchema } from './validation'
+import { toast } from 'sonner'
+import { CoffeeFormData, coffeeSchema } from './validation'
 
-interface dashboardFormProps {
-  defaultData: CoffeeTracker
+type UseDashboardFormProps = {
+  defaultData?: CoffeeTracker
 }
 
-export const useDashboardForm = ({ defaultData }: dashboardFormProps) => {
+export function useDashboardForm({ defaultData }: UseDashboardFormProps) {
   const createCoffee = useCreateCoffee()
+  // const updateCoffee = useUpdateCoffee()
 
-  // if (!defaultData) return null
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | undefined>()
 
-  const form = useForm<CoffeeForm>({
+  const form = useForm<CoffeeFormData>({
     resolver: zodResolver(coffeeSchema),
     defaultValues: {
-      totalAmount: defaultData?.total_amount || 0,
-      cupPrice: defaultData?.cup_price || 0,
+      totalAmount: defaultData?.total_amount ?? 0,
+      cupPrice: defaultData?.cup_price ?? 0,
     },
   })
 
-  const onSubmit = async (data: CoffeeForm) => {
+  async function onSubmit(data: CoffeeFormData) {
+    setError(undefined)
     setIsLoading(true)
+    console.log(data)
 
     try {
-      await createCoffee.mutateAsync(data)
+      if (defaultData?.id) {
+        // await updateAddress.mutateAsync({
+        //   id: defaultData.id,
+        //   data,
+        // })
+      } else {
+        // await createCoffee.mutateAsync({
+        //   data,
+        // })
+      }
+      toast.success('Datos guardados correctamente')
     } catch (error) {
-      setError('No se ha podido realizar la operación')
+      if (error instanceof Error) setError(error.message)
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
   }
 
-  return { form, onSubmit, isLoading, error }
+  return {
+    form,
+    onSubmit,
+    isLoading,
+    error,
+  }
 }

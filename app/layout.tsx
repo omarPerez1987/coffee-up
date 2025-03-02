@@ -1,9 +1,7 @@
-import { ThemeProvider } from 'next-themes'
 import { Geist } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/lib/providers'
-import { createClient } from '@/utils/supabase/server'
-import { redirect } from 'next/navigation'
+import { Toaster } from 'sonner'
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -24,27 +22,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    return redirect('/auth/sign-in')
-  }
-
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
-      <body className="bg-background text-foreground">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Providers>{children}</Providers>
-        </ThemeProvider>
+      <body className="min-h-screen bg-background text-foreground antialiased">
+        <Providers>{children}</Providers>
+        <Toaster richColors closeButton duration={1500} />
       </body>
     </html>
   )

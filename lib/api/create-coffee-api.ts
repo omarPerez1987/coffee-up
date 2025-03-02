@@ -16,6 +16,7 @@ export const createCoffeeApi = async ({
       total_amount: totalAmount,
       cup_price: cupPrice,
       cups: 0,
+      balance: totalAmount,
     },
   ])
 

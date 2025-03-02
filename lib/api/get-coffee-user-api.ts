@@ -5,7 +5,8 @@ export interface GetCoffeeUserRequest {
 }
 
 interface GetCoffeeUserResponse {
-  data: CoffeeTracker | null
+  data?: CoffeeTracker
+  error: Error | null
 }
 
 export const getUserCoffeeApi = async ({
@@ -17,11 +18,18 @@ export const getUserCoffeeApi = async ({
     .from('coffee_tracker')
     .select('*')
     .eq('user_id', userId)
-    .single()
+    .maybeSingle()
 
-  if (error) {
-    console.error('Error obteniendo datos:', error)
+  if (!data) return { data: undefined, error }
+
+  const memoData = {
+    id: data.id,
+    user_id: data.user_id,
+    total_amount: data.total_amount,
+    cup_price: data.cup_price,
+    cups: Math.floor(data.total_amount / data.cup_price),
+    balance: data.total_amount,
   }
 
-  return { data }
+  return { data: memoData, error }
 }
