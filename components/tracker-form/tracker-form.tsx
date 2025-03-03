@@ -13,14 +13,15 @@ import {
 import { Input } from '@/components/ui/input'
 import { useGetCoffeeId } from '@/lib/hooks/use-get-coffee-id'
 import { Loader } from '@/lib/loader'
-import { useDashboardForm } from './use-dashboard-form'
+import { useRouter } from 'next/navigation'
+import { useTrackerForm } from './use-tracker-form'
 
-function DashboardFormData({ defaultData }: { defaultData?: CoffeeTracker }) {
-  const { form, onSubmit, isLoading, error } = useDashboardForm({ defaultData })
+function TrackerFormData({ defaultData }: { defaultData?: CoffeeTracker }) {
+  const { form, onSubmit, isLoading, error } = useTrackerForm({ defaultData })
 
   return (
     <>
-      <h1>Configuración</h1>
+      <h1>Tracking</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -28,13 +29,9 @@ function DashboardFormData({ defaultData }: { defaultData?: CoffeeTracker }) {
             name="balance"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Insertar dinero</FormLabel>
+                <FormLabel>Balance</FormLabel>
                 <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Insertar dinero..."
-                    {...field}
-                  />
+                  <Input type="number" {...field} disabled />
                 </FormControl>
                 <FormMessage>{error}</FormMessage>
                 <FormMessage />
@@ -43,16 +40,12 @@ function DashboardFormData({ defaultData }: { defaultData?: CoffeeTracker }) {
           />
           <FormField
             control={form.control}
-            name="cup_price"
+            name="cups"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Precio taza</FormLabel>
+                <FormLabel>Tazas</FormLabel>
                 <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Insertar dinero..."
-                    {...field}
-                  />
+                  <Input type="number" {...field} />
                 </FormControl>
                 <FormMessage>{error}</FormMessage>
                 <FormMessage />
@@ -68,11 +61,11 @@ function DashboardFormData({ defaultData }: { defaultData?: CoffeeTracker }) {
   )
 }
 
-export default function DashboardForm({ userId }: { userId: string }) {
+export default function TrackerForm({ userId }: { userId: string }) {
   const { data, isLoading, isError } = useGetCoffeeId(userId)
 
   if (isLoading) return <Loader />
   if (isError) throw new Error(`Error inesperado: ${isError}`)
 
-  return <DashboardFormData defaultData={data?.data} />
+  return <TrackerFormData defaultData={data?.data} />
 }

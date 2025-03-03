@@ -25,10 +25,9 @@ export const getUserCoffeeApi = async ({
   const memoData = {
     id: data.id,
     user_id: data.user_id,
-    total_amount: data.total_amount,
+    balance: data.balance,
     cup_price: data.cup_price,
-    cups: Math.floor(data.total_amount / data.cup_price),
-    balance: data.total_amount,
+    cups: data.cups,
   }
 
   return { data: memoData, error }

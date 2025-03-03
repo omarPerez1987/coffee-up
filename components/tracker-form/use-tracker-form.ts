@@ -1,44 +1,39 @@
-import useCreateCoffee from '@/lib/hooks/use-create-coffee'
-import useUpdateCoffee from '@/lib/hooks/use-update-coffee'
+import useUpdateTracker from '@/lib/hooks/use-update-tracker'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { CoffeeFormData, coffeeSchema } from './validation'
+import { TrackerFormData, trackerSchema } from './validation'
 
-type UseDashboardFormProps = {
+type UseTrackerFormProps = {
   defaultData?: CoffeeTracker
 }
 
-export function useDashboardForm({ defaultData }: UseDashboardFormProps) {
-  const createCoffee = useCreateCoffee()
-  const updateCoffee = useUpdateCoffee()
+export function useTrackerForm({ defaultData }: UseTrackerFormProps) {
+  const updateCoffee = useUpdateTracker()
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
 
-  const form = useForm<CoffeeFormData>({
-    resolver: zodResolver(coffeeSchema),
+  const form = useForm<TrackerFormData>({
+    resolver: zodResolver(trackerSchema),
     defaultValues: {
       balance: defaultData?.balance ?? 0,
-      cup_price: defaultData?.cup_price ?? 0,
+      cups: defaultData?.cups ?? 0,
     },
   })
 
-  async function onSubmit(data: CoffeeFormData) {
+  async function onSubmit(data: TrackerFormData) {
     setError(undefined)
     setIsLoading(true)
-    console.log(data)
 
     try {
       if (defaultData?.id) {
         await updateCoffee.mutateAsync({
           id: defaultData.id,
-          balance: data.balance,
-          cup_price: data.cup_price,
+          cup_price: defaultData.cup_price,
+          ...data,
         })
-      } else {
-        await createCoffee.mutateAsync(data)
       }
       setIsLoading(false)
       toast.success('Datos guardados correctamente')

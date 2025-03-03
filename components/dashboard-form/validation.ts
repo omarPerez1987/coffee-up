@@ -1,13 +1,13 @@
 import { z } from 'zod'
 
 export const coffeeSchema = z.object({
-  totalAmount: z
+  balance: z
     .string()
     .min(1)
     .max(5)
     .transform(val => Number.parseFloat(val.replace(',', '.'))),
 
-  cupPrice: z
+  cup_price: z
     .string()
     .min(1)
     .max(5)

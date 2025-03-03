@@ -1,13 +1,12 @@
 import { CoffeeFormData } from '@/components/dashboard-form/validation'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createCoffeeApi } from '../api/create-coffee-api'
-import { useAuthenticate } from './use-authenticate'
+import { CreateCoffeeRequest, createCoffeeApi } from '../api/create-coffee-api'
 
 const useCreateCoffee = () => {
   const queryClient = useQueryClient()
 
   const createCoffee = useMutation({
-    mutationFn: async (data: CoffeeFormData) => {
+    mutationFn: async (data: CreateCoffeeRequest) => {
       return await createCoffeeApi(data)
     },
     onSuccess: () => {

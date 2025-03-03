@@ -13,10 +13,6 @@ export function SideBar() {
             Dashboard
           </SideBarLink>
 
-          <SideBarLink href="/setting" icon={Box}>
-            Configurar
-          </SideBarLink>
-
           <SideBarLink href="/tracker" icon={Users}>
             Tracking
           </SideBarLink>
