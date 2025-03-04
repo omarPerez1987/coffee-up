@@ -1,9 +1,6 @@
 import useUpdateTracker from '@/lib/hooks/use-update-tracker'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { TrackerFormData, trackerSchema } from './validation'
 
 type UseTrackerFormProps = {
   defaultData?: CoffeeTracker
@@ -15,25 +12,13 @@ export function useTrackerForm({ defaultData }: UseTrackerFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
 
-  const form = useForm<TrackerFormData>({
-    resolver: zodResolver(trackerSchema),
-    defaultValues: {
-      balance: defaultData?.balance ?? 0,
-      cups: defaultData?.cups ?? 0,
-    },
-  })
-
-  async function onSubmit(data: TrackerFormData) {
+  async function onSubmit() {
     setError(undefined)
     setIsLoading(true)
 
     try {
       if (defaultData?.id) {
-        await updateCoffee.mutateAsync({
-          id: defaultData.id,
-          cup_price: defaultData.cup_price,
-          ...data,
-        })
+        await updateCoffee.mutateAsync(defaultData)
       }
       setIsLoading(false)
       toast.success('Datos guardados correctamente')
@@ -44,7 +29,6 @@ export function useTrackerForm({ defaultData }: UseTrackerFormProps) {
   }
 
   return {
-    form,
     onSubmit,
     isLoading,
     error,

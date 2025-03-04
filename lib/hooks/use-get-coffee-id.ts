@@ -3,7 +3,7 @@ import { getUserCoffeeApi } from '../api/get-coffee-user-api'
 
 export const useGetCoffeeId = (userId: string) => {
   return useQuery({
-    queryKey: ['coffees'],
+    queryKey: ['coffees', userId],
     queryFn: async () => {
       const result = await getUserCoffeeApi({ userId })
       if (!result.data) return { data: undefined, error: result.error }

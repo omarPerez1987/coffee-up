@@ -30,7 +30,7 @@ export function SideBarLink({
 
   return (
     <div
-      className={`flex cursor-pointer items-center justify-start py-1.5 pl-6 text-base ${isActive ? 'bg-green-700 text-white' : ''}`}
+      className={`flex cursor-pointer items-center justify-start py-1.5 pl-6 text-base ${isActive ? 'bg-primary text-white' : ''}`}
     >
       <Icon />
       <NavLink href={href}>{children}</NavLink>

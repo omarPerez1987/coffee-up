@@ -1,70 +1,98 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { useDebounce } from '@/lib/hooks/use-debounce'
 import { useGetCoffeeId } from '@/lib/hooks/use-get-coffee-id'
 import { Loader } from '@/lib/loader'
+import { useEffect, useState } from 'react'
+import { Button } from '../ui/button'
 import { useDashboardForm } from './use-dashboard-form'
 
 function DashboardFormData({ defaultData }: { defaultData?: CoffeeTracker }) {
   const { form, onSubmit, isLoading, error } = useDashboardForm({ defaultData })
 
+  const [initialValues, setInitialValues] = useState({
+    add: defaultData?.balance ?? undefined,
+    cup_price: defaultData?.cup_price ?? 0,
+  })
+
+  const [values, setValues] = useState(initialValues)
+  const debouncedValues = useDebounce(values, 500)
+
+  useEffect(() => {
+    if (initialValues !== debouncedValues) {
+      onSubmit(debouncedValues)
+      setInitialValues(debouncedValues)
+    }
+  }, [debouncedValues, onSubmit, initialValues])
+
   return (
-    <>
-      <h1>Configuración</h1>
+    <section className="flex flex-col items-center justify-center gap-4 p-4">
+      <Button className="rounded-full text-5xl h-32 w-32 bg-primary cursor-default">
+        {defaultData?.balance ?? 0}
+      </Button>
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="flex flex-col items-center gap-4 pt-11">
           <FormField
             control={form.control}
-            name="balance"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Insertar dinero</FormLabel>
+            name="add"
+            render={() => (
+              <FormItem className="flex flex-col items-center justify-center gap-4">
+                <FormLabel>Añadir dinero</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    placeholder="Insertar dinero..."
-                    {...field}
+                    type="text"
+                    autoComplete="off"
+                    className="rounded-full text-3xl h-24 w-24 text-center"
+                    onChange={e =>
+                      setValues({
+                        ...values,
+                        add: Number(e.target.value) || undefined,
+                      })
+                    }
                   />
                 </FormControl>
                 <FormMessage>{error}</FormMessage>
-                <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="cup_price"
-            render={({ field }) => (
-              <FormItem>
+            render={() => (
+              <FormItem className="flex flex-col items-center justify-center">
                 <FormLabel>Precio taza</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    placeholder="Insertar dinero..."
-                    {...field}
+                    type="text"
+                    autoComplete="off"
+                    className="rounded-full text-3xl h-24 w-24 text-center"
+                    value={values.cup_price}
+                    onChange={e =>
+                      setValues({
+                        ...values,
+                        cup_price: Number(e.target.value) || 0,
+                      })
+                    }
                   />
                 </FormControl>
                 <FormMessage>{error}</FormMessage>
-                <FormMessage />
               </FormItem>
             )}
           />
-          <Button disabled={isLoading} type="submit">
-            Enviar
-          </Button>
-        </form>
+        </div>
       </Form>
-    </>
+    </section>
   )
 }
 

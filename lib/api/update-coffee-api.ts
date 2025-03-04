@@ -2,41 +2,39 @@ import { createClient } from '@/utils/supabase/client'
 
 export interface UpdateCoffeeRequest {
   id: string
-  balance: number
+  add?: number
   cup_price: number
 }
 
 export const updateCoffeeApi = async ({
   id,
-  balance,
+  add = 0,
   cup_price,
 }: UpdateCoffeeRequest) => {
   const supabase = createClient()
 
   const { data: initialData, error: initialError } = await supabase
     .from('coffee_tracker')
-    .select('*')
+    .select('balance')
     .eq('id', id)
     .maybeSingle()
 
-  if (initialError) {
-    console.error('Error obteniendo datos iniciales:', initialError)
+  if (initialError || !initialData) {
+    console.error(
+      'Error obteniendo datos iniciales:',
+      initialError || 'Datos no encontrados'
+    )
     return null
   }
-  if (!initialData) throw new Error('Datos iniciales no encontrados')
 
-  const calculateBalance = (initialData.balance || 0) + balance
-  const calculateCups = Math.floor(calculateBalance / cup_price)
+  const newBalance = initialData.balance + (add ?? 0)
+  const newCups = newBalance > 0 ? Math.floor(newBalance / cup_price) : 0
 
   const { data, error } = await supabase
     .from('coffee_tracker')
-    .update({
-      balance: calculateBalance,
-      cup_price,
-      cups: calculateCups,
-    })
+    .update({ balance: newBalance, cup_price, cups: newCups })
     .eq('id', id)
-    .select()
+    .select('id, balance, cup_price, cups')
     .single()
 
   if (error) {

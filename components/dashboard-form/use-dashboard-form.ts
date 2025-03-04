@@ -1,6 +1,7 @@
 import useCreateCoffee from '@/lib/hooks/use-create-coffee'
 import useUpdateCoffee from '@/lib/hooks/use-update-coffee'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -11,6 +12,7 @@ type UseDashboardFormProps = {
 }
 
 export function useDashboardForm({ defaultData }: UseDashboardFormProps) {
+  const router = useRouter()
   const createCoffee = useCreateCoffee()
   const updateCoffee = useUpdateCoffee()
 
@@ -20,7 +22,7 @@ export function useDashboardForm({ defaultData }: UseDashboardFormProps) {
   const form = useForm<CoffeeFormData>({
     resolver: zodResolver(coffeeSchema),
     defaultValues: {
-      balance: defaultData?.balance ?? 0,
+      add: undefined,
       cup_price: defaultData?.cup_price ?? 0,
     },
   })
@@ -28,13 +30,12 @@ export function useDashboardForm({ defaultData }: UseDashboardFormProps) {
   async function onSubmit(data: CoffeeFormData) {
     setError(undefined)
     setIsLoading(true)
-    console.log(data)
 
     try {
       if (defaultData?.id) {
         await updateCoffee.mutateAsync({
           id: defaultData.id,
-          balance: data.balance,
+          add: data.add,
           cup_price: data.cup_price,
         })
       } else {
@@ -42,6 +43,7 @@ export function useDashboardForm({ defaultData }: UseDashboardFormProps) {
       }
       setIsLoading(false)
       toast.success('Datos guardados correctamente')
+      router.push('/tracker')
     } catch (error) {
       if (error instanceof Error) setError(error.message)
       setIsLoading(false)
