@@ -1,4 +1,3 @@
-import { CoffeeFormData } from '@/components/dashboard-form/validation'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { CreateCoffeeRequest, createCoffeeApi } from '../api/create-coffee-api'
 

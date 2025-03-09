@@ -1,7 +1,7 @@
 import { createClient } from '@/utils/supabase/client'
 
 export interface CreateCoffeeRequest {
-  add?: number
+  add: number
   cup_price: number
 }
 
@@ -13,7 +13,7 @@ export const createCoffeeApi = async ({
 
   const { data, error } = await supabase.from('coffee_tracker').insert([
     {
-      add,
+      balance: add ? add : cup_price,
       cup_price,
       cups: add ? Math.floor(add / cup_price) : 0,
     },

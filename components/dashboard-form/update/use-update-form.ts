@@ -5,45 +5,52 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { CoffeeFormData, coffeeSchema } from './validation'
+import { UpdateData, updateSchema } from './validation'
 
 type UseDashboardFormProps = {
-  defaultData?: CoffeeTracker
+  defaultData: CoffeeTracker
 }
 
-export function useDashboardForm({ defaultData }: UseDashboardFormProps) {
-  const router = useRouter()
-  const createCoffee = useCreateCoffee()
+export function useUpdateForm({ defaultData }: UseDashboardFormProps) {
   const updateCoffee = useUpdateCoffee()
 
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | undefined>()
 
-  const form = useForm<CoffeeFormData>({
-    resolver: zodResolver(coffeeSchema),
+  const form = useForm<UpdateData>({
+    resolver: zodResolver(updateSchema),
     defaultValues: {
       add: undefined,
       cup_price: defaultData?.cup_price ?? 0,
+      cups: defaultData?.cups ?? 0,
     },
   })
 
-  async function onSubmit(data: CoffeeFormData) {
+  async function onSubmit(data: UpdateData) {
     setError(undefined)
     setIsLoading(true)
 
+    const { add, cup_price, cups } = data
+    // console.log(typeof add, typeof cup_price)
+
+    let balance = defaultData.balance
+
+    if (add) {
+      balance = Number(defaultData.balance) + Number(add)
+    } else if (cups) {
+      balance = Number(defaultData.balance) - Number(defaultData.cup_price)
+    }
+
     try {
-      if (defaultData?.id) {
-        await updateCoffee.mutateAsync({
-          id: defaultData.id,
-          add: data.add,
-          cup_price: data.cup_price,
-        })
-      } else {
-        await createCoffee.mutateAsync(data)
-      }
+      await updateCoffee.mutateAsync({
+        id: defaultData.id,
+        balance: balance > 0 ? balance : 0,
+        cup_price: cup_price ? cup_price : defaultData.cup_price,
+      })
+
       setIsLoading(false)
       toast.success('Datos guardados correctamente')
-      router.push('/tracker')
+      form.reset()
     } catch (error) {
       if (error instanceof Error) setError(error.message)
       setIsLoading(false)

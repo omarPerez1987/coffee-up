@@ -22,12 +22,14 @@ export const getUserCoffeeApi = async ({
 
   if (!data) return { data: undefined, error }
 
+  const { id, user_id, balance, cup_price } = data
+
   const memoData = {
-    id: data.id,
-    user_id: data.user_id,
-    balance: data.balance,
-    cup_price: data.cup_price,
-    cups: data.cups,
+    id: id,
+    user_id: user_id,
+    balance: balance,
+    cup_price: cup_price,
+    cups: balance > 0 && cup_price > 0 ? Math.floor(balance / cup_price) : 0,
   }
 
   return { data: memoData, error }
