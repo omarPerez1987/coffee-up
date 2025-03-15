@@ -19,9 +19,9 @@ export default async function Signup(props: {
 
   return (
     <>
-      <form className="flex flex-col min-w-64 max-w-64 mx-auto">
+      <form className="flex flex-col">
         <h1 className="text-2xl font-medium">Registrarse</h1>
-        <p className="text-sm text text-foreground">
+        <p className="text-sm text text-foreground flex gap-2">
           Ya tienes una cuenta?
           <Link
             className="text-primary font-medium underline"
@@ -41,7 +41,7 @@ export default async function Signup(props: {
           <Input
             type="password"
             name="password"
-            placeholder="Your password"
+            placeholder="Contraseña"
             minLength={6}
             required
           />

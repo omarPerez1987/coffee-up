@@ -1,17 +1,22 @@
+import { cookies } from 'next/headers'
+
+import { AppSideBar } from '@/components/app-sidebar'
 import Header from '@/components/header'
-import { SideBar } from '@/components/sidebar'
+import { SidebarProvider } from '@/components/ui/sidebar'
 
-export default function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({
+  children,
+}: { children: React.ReactNode }) {
+  const cookieStore = await cookies()
+  const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true'
+
   return (
-    <div className="flex" suppressHydrationWarning>
-      <SideBar />
-
-      <div className="flex-1">
+    <SidebarProvider defaultOpen={defaultOpen}>
+      <AppSideBar />
+      <main className="w-full">
         <Header />
-        <main className="pl-60 pt-16">
-          <section className="p-8">{children}</section>
-        </main>
-      </div>
-    </div>
+        <section className="p-6">{children}</section>
+      </main>
+    </SidebarProvider>
   )
 }

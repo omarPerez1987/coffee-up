@@ -17,6 +17,7 @@ export default function User() {
         <AvatarImage src={avatar} />
         <AvatarFallback>{noAvatar}</AvatarFallback>
       </Avatar>
+      <p>{user.user_metadata.name.split(' ').slice(0, -1).join(' ')}</p>
     </div>
   ) : (
     <div className="flex gap-2">

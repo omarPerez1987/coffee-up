@@ -6,10 +6,10 @@ export default async function Layout({
   children: React.ReactNode
 }) {
   return (
-    <div className="max-w-4xl flex flex-col">
+    <main className="w-full flex flex-col justify-center items-center p-48">
       <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID!}>
-        {children}
+        <section>{children}</section>
       </GoogleOAuthProvider>
-    </div>
+    </main>
   )
 }

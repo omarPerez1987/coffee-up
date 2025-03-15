@@ -10,9 +10,9 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams
 
   return (
-    <form className="flex-1 flex flex-col min-w-64">
+    <form className="flex-1 flex flex-col max-w-md">
       <h1 className="text-2xl font-medium">Iniciar sesión</h1>
-      <p className="text-sm text-foreground">
+      <p className="text-sm text-foreground flex gap-2">
         ¿No tienes una cuenta?
         <Link
           className="text-foreground font-medium underline"
@@ -62,7 +62,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
         <FormMessage message={searchParams} />
       </div>
 
-      <div className="flex flex-col gap-2 mt-8">
+      <div className="flex flex-col gap-2 mt-8 text-xs">
         <span>
           Al registrarse para crear una cuenta, usted acepta nuestros términos
           de servicio y política de privacidad.
