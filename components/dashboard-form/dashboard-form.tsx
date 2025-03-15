@@ -1,22 +1,9 @@
 'use client'
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useDebounce } from '@/lib/hooks/use-debounce'
 import { useGetCoffeeId } from '@/lib/hooks/use-get-coffee-id'
 import { Loader } from '@/lib/loader'
-import { useEffect, useState } from 'react'
-import { Button } from '../ui/button'
 import CreateDashboardFormData from './create/create-form'
-import TrackerFormData from './update/update-form'
-import { useDashboardForm } from './use-update-form'
+import UpdateFormData from './update/update-form'
 
 export default function DashboardForm({ userId }: { userId: string }) {
   const { data, isLoading, isError } = useGetCoffeeId(userId)
@@ -27,6 +14,6 @@ export default function DashboardForm({ userId }: { userId: string }) {
   return !data?.data ? (
     <CreateDashboardFormData />
   ) : (
-    <TrackerFormData defaultData={data?.data} />
+    <UpdateFormData defaultData={data?.data} />
   )
 }

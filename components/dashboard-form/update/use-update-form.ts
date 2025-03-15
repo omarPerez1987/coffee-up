@@ -1,7 +1,5 @@
-import useCreateCoffee from '@/lib/hooks/use-create-coffee'
 import useUpdateCoffee from '@/lib/hooks/use-update-coffee'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -31,8 +29,6 @@ export function useUpdateForm({ defaultData }: UseDashboardFormProps) {
     setIsLoading(true)
 
     const { add, cup_price, cups } = data
-    // console.log(typeof add, typeof cup_price)
-
     let balance = defaultData.balance
 
     if (add) {

@@ -2,7 +2,7 @@
 
 import { useDebounce } from '@/lib/hooks/use-debounce'
 import { formatNumber } from '@/lib/utils'
-import { Coffee, Regex } from 'lucide-react'
+import { Coffee } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Button } from '../../ui/button'
 import {
@@ -27,7 +27,7 @@ interface SetValues {
 }
 
 export default function UpdateFormData({ defaultData }: UpdateFormDataProps) {
-  const { form, onSubmit, isLoading, error } = useUpdateForm({ defaultData })
+  const { form, onSubmit, error } = useUpdateForm({ defaultData })
 
   const [initialValues, setInitialValues] = useState<SetValues>({
     add: defaultData?.balance ?? undefined,

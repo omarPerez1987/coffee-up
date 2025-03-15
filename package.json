@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "type": "tsc --pretty --noEmit",
     "start": "next start"
   },
   "dependencies": {
