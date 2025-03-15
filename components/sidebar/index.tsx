@@ -12,10 +12,6 @@ export function SideBar() {
           <SideBarLink href="/dashboard" icon={LayoutDashboard}>
             Dashboard
           </SideBarLink>
-
-          <SideBarLink href="/tracker" icon={Users}>
-            Tracking
-          </SideBarLink>
         </div>
       </nav>
     </SidebarContainer>
