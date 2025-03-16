@@ -53,7 +53,7 @@ export default function UpdateFormData({ defaultData }: UpdateFormDataProps) {
     <section className="flex flex-col items-center justify-center gap-4 p-4">
       <Form {...form}>
         <div className="flex items-center justify-center gap-4">
-          <Button className="flex flex-col rounded-full text-5xl h-32 w-32 bg-primary cursor-default">
+          <Button className="flex flex-col rounded-full text-5xl h-28 w-28 sm:h-32 sm:w-32 bg-primary cursor-default">
             <span className="text-xs uppercase">Balance</span>
             {defaultData?.balance ?? 0}
           </Button>
@@ -83,7 +83,7 @@ export default function UpdateFormData({ defaultData }: UpdateFormDataProps) {
             )}
           />
 
-          <Button className="flex flex-col rounded-full text-5xl h-32 w-32 bg-primary cursor-default">
+          <Button className="flex flex-col rounded-full text-5xl h-28 w-28 sm:h-32 sm:w-32 bg-primary cursor-default">
             <Coffee />
             {defaultData?.cups ?? 0}
           </Button>
